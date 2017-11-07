@@ -1,0 +1,27 @@
+page-submit-vote {
+    .submit_vote-radio_button{
+        position: absolute;
+        top: 25%;
+        right: 5%;
+    }
+    .submit_vote-audio_div{
+        position: relative;
+    }
+    .submit_vote-video_radio_button{
+        float: right;
+        padding: 10px;
+    }
+    .video_div{
+        padding-left: 10px;
+    }
+    .ion-md-videocam{
+        padding: 5px!important;
+    }
+    .video_checkbox_button{
+        padding-left: 10px;
+    }
+    .ion_item-video>.item-inner{
+        border-bottom: none !important;
+        padding-left: 0px !important;
+    }
+}

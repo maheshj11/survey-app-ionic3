@@ -1,0 +1,125 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Edit Survey</ion-title>
+    <ion-buttons end>
+      <button class="navbar-stats-button" ion-button (click)="surveyStats()">
+        stats
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+  <form #editSurvey="ngForm">
+    <ion-item>
+      <ion-label floating>Title</ion-label>
+      <ion-input type="text" name="title" [(ngModel)]="survey.title" required>
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Description</ion-label>
+      <ion-input type="text" name="description" [(ngModel)]="survey.description">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Type</ion-label>
+      <ion-select name="type" [(ngModel)]="selectedOption" (ngModelChange)="checkType($event)">
+        <ion-option *ngFor="let type of types" [selected]="type === selectedOption" [value]="type">{{ type }}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item-divider text-center>
+      <h2>Options</h2>
+    </ion-item-divider>
+
+    <div *ngIf="!typeSingle">
+      <ion-item *ngFor="let item of commentsData ; let i='index'">
+        <ion-label floating>Option {{i+1}}</ion-label>
+        <ion-input type="text" [value]="item.name" (input)="item.name = $event.target.value"></ion-input>
+        <button ion-button icon-only clear item-right (click)="removeCommentsData(i)"><ion-icon color="danger" name="close"></ion-icon></button>
+      </ion-item>
+    </div>
+
+    <div *ngIf="typeSingle">
+      <ion-item *ngFor="let item of optionsData ; let i='index'" text-wrap>
+        <ion-label *ngIf="item.type === 'text'" floating>Option {{i+1}}</ion-label>
+        <ion-input *ngIf="item.type === 'text'" type="text" [value]="item.name" (input)="item.name = $event.target.value"></ion-input>
+        <button *ngIf="item.type === 'text'" ion-button icon-only clear item-right (click)="removeData(i)"><ion-icon color="danger" name="close"></ion-icon></button>
+
+        <div class="options-container-div" *ngIf="item.type === 'image'">
+          <button type="button" ion-button outline (click)=onTakePicture(i) icon-left>
+              <ion-icon name="camera"></ion-icon>
+              OpenCamera
+            </button>
+          <button type="button" ion-button outline (click)=onaddPicture(i) icon-left>
+                <ion-icon name="camera"></ion-icon>
+                Browse
+            </button>
+          <div>
+            <img class="optionsImage-image" [src]="_DomSanitizer.bypassSecurityTrustUrl(item.imageUrl)" *ngIf="item.imageUrl" />
+            <ion-icon class="option-icon" color="danger" name="close" (click)="removeData(i)"></ion-icon>
+          </div>
+        </div>
+
+        <div *ngIf="item.type === 'audio'" class="options-container-div">
+          <button type="button" outline ion-button icon-left (click)=onStartAudioRecording(i)>
+            <ion-icon name="mic"></ion-icon>
+            Record Audio
+          </button>
+          <div>
+            <audio controls *ngIf="item.audioUrl">
+              <source [src]="item.audioUrl" type="audio/wav">
+            </audio>
+            <ion-icon class="option-icon" color="danger" name="close" (click)="removeData(i)"></ion-icon>
+          </div>
+        </div>
+
+        <div *ngIf="item.type === 'video'" class="options-container-div">
+          <button *ngIf="!item.videoId" type="button" outline ion-button icon-left (click)="addYouTubeUrl(i)">
+            <ion-icon name="videocam"></ion-icon>
+            YouTube Link
+          </button>
+          <ion-item *ngIf="item.videoId" class="ion_item-video">
+            <ion-thumbnail item-start (click)="playVideo(item.videoId)">
+              <img src={{item.videoThumbnail}}>
+            </ion-thumbnail>
+            <h2>{{ item.videoTitle }}</h2>
+            <button ion-button clear item-end (click)="addYouTubeUrl(i)">Edit</button>
+          </ion-item>
+          <ion-icon class="option-icon" color="danger" name="close" (click)="removeData(i)"></ion-icon>
+        </div>
+
+      </ion-item>
+    </div>
+
+    <button margin *ngIf="!typeSingle" ion-button type="button" (click)="addMoreOption()"> Add More Feilds</button>
+    <button margin *ngIf="typeSingle" ion-button type="button" (click)="showAddMoreOptions()"> Add More Feilds</button>
+
+    <ion-item *ngIf="!showDateTime">
+      <ion-label>Expire Survey On</ion-label>
+      <ion-icon item-right name="add" (click)="showHideDateTime()"></ion-icon>
+    </ion-item>
+
+
+    <ion-item *ngIf="showDateTime">
+      <ion-label>Remove Survey Expiration</ion-label>
+      <ion-icon item-right name="remove" (click)="showHideDateTime()"></ion-icon>
+    </ion-item>
+    <ion-item *ngIf="showDateTime">
+      <ion-label>Date</ion-label>
+      <ion-datetime displayFormat="MM/DD/YYYY" min="2017" max="2020-10-31" name="surveyDate" [(ngModel)]="survey.surveyDate"></ion-datetime>
+    </ion-item>
+    <ion-item *ngIf="showDateTime">
+      <ion-label>Time</ion-label>
+      <ion-datetime displayFormat="hh:mm a" name="surveyTime" [(ngModel)]="survey.surveyTime"></ion-datetime>
+    </ion-item>
+
+  </form>
+</ion-content>
+<ion-footer>
+  <ion-toolbar class="action-button">
+    <button ion-button block color="primary" [disabled]="!editSurvey.valid" (click)="edit()">Update</button>
+  </ion-toolbar>
+</ion-footer>

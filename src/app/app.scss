@@ -14,3 +14,19 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+.global_input-error {
+    color: red;
+}
+.global_video-button {
+    background-color: red;
+    color: white;
+    border: none
+}
+.action-button{
+    padding: 0px;
+    min-height: 0px;
+    button{
+        height: 42px;
+        margin: 0px;
+    }
+}

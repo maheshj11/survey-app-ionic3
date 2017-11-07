@@ -1,0 +1,31 @@
+page-login {
+    .logo-wrapper{
+        text-align: center;
+    }
+    .logo{
+        margin: 0 auto;
+        display: block;
+        max-width:200px;
+        height: 140px;
+        }
+    .login-form_buttons{
+        padding: 10px;
+        float: right;
+
+        button:nth-of-type(1){
+            margin-right: 15px;
+        }
+    }
+    .or_h2{
+        text-align: center;
+        font-weight: bolder;
+        font-size: 22px;
+        margin-top: 12px;
+    }
+    .google {
+        background-color: #dd4b39 !important;
+      }
+    .facebook {
+        background-color: #006699 !important;
+    }
+}

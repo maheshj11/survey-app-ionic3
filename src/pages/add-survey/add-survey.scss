@@ -1,0 +1,32 @@
+page-add-survey {
+    .submit-button{
+        float: right
+    }
+    .icon-md-danger {
+        color: #f53d3d;
+        float: right;
+        font-size: 28px;
+    }
+    .optionsImage-image{
+        height: 200px;
+    }
+    .optionImage-hr{
+        height: 1px;
+        color: black;
+    }
+    .options-container-div{
+        text-align: center;
+        position: relative;
+    }
+    .option-icon{
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+    .ion_item-video>.item-inner{
+        border-bottom: none !important;
+    }
+    .option-button{
+        padding: 15px !important;
+    }
+}

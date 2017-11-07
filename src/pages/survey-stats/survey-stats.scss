@@ -1,0 +1,34 @@
+page-survey-stats {
+    .list-header-md {
+        background: brown;
+    }
+    .survey-title {
+        color: white
+    }
+    .item-md .item-button {
+        padding: 0px 10px;
+        height: 32px;
+    }
+    ion-icon {
+        display: inline-block;
+        font-size: 22px;
+        padding: 5px;
+    }
+    .options-wrapper{
+        display: inline-flex;
+        span{
+            margin-top: 15px;
+        }
+        audio{
+            width: 50px;
+        }
+    }
+    .showDateTime{
+        color: brown;
+        text-align: right;
+        font-size: 10px;
+    }
+    .Time_heading{
+        color:#427feb;
+    }
+}

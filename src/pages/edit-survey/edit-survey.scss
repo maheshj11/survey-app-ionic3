@@ -1,0 +1,31 @@
+page-edit-survey {
+    .icon-md-danger {
+        color: #f53d3d;
+        float: right;
+        font-size: 28px;
+    }
+    .optionsImage-image{
+        height: 200px;
+    }
+    .optionImage-hr{
+        height: 1px;
+        color: black;
+    }
+    .options-container-div{
+        text-align: center;
+        position: relative;
+    }
+    .option-icon{
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+    .navbar-stats-button{   
+        background: #0043da;
+        width: 70px;
+        border-radius: 5px;
+    }
+    .ion_item-video>.item-inner{
+        border-bottom: none !important;
+    }
+}

@@ -1,5 +1,8 @@
 {
   "name": "Survey",
-  "app_id": "",
-  "type": "ionic-angular"
+  "app_id": "0df19fa3",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
 }

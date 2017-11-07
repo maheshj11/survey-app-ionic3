@@ -1,0 +1,19 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title text-center>Vote Survey</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngIf="emptyList">Nothing to display</ion-item>
+    <ion-item (click)="goToSubmitVotePage(survey)" *ngFor="let survey of surveyList">
+      <ion-icon color="secondary" *ngIf="survey.didVote === true" item-right name="checkmark"></ion-icon>
+      <ion-icon color="danger" *ngIf="survey.didVote !== true" item-right name="close"></ion-icon>
+      <h2>{{ survey.title }}</h2>
+      <p>{{ survey.description }}</p>
+    </ion-item>
+  </ion-list>
+</ion-content>

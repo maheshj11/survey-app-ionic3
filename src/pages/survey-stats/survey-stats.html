@@ -1,0 +1,131 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>survey-stats</ion-title>
+  </ion-navbar>
+
+</ion-header>
+<ion-content>
+  <div *ngIf="!typeComments;else commentsTemplate">
+    <div *ngIf="pieChartData" style="display: block">
+      <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+        (chartClick)="chartClicked($event)">
+      </canvas>
+    </div>
+    <hr>
+    <h4 text-center>Survey Details</h4>
+    <ion-card>
+      <ion-list>
+        <ion-list-header>
+          <h2 class="survey-title">{{survey?.title}}</h2>
+        </ion-list-header>
+        <ion-item *ngFor="let data of surveyData; let i = index" text-wrap>
+          <span *ngIf="data.name">
+            {{i+1}} - {{data?.name}} has {{data?.votes}} votes
+          </span>
+          <span class="options-wrapper" *ngIf="data.videoId">
+            <span>{{i+1}}</span>
+            <ion-item *ngIf="data.videoId" class="ion_item-video">
+              <ion-thumbnail item-start (click)="playVideo(data.videoId)">
+                <img src={{data.videoThumbnail}}>
+              </ion-thumbnail>
+              <p>{{ data.videoTitle }}</p>
+              <h2>has {{data?.votes}} votes</h2>
+            </ion-item>
+          </span>
+          <span class="options-wrapper" *ngIf="data.imageUrl">
+            <span>{{i+1}} </span>
+            <ion-item>
+              <ion-thumbnail item-start>
+                <img [src]="_DomSanitizer.bypassSecurityTrustUrl(data.imageUrl)">
+              </ion-thumbnail>
+              <h2>has {{data?.votes}} votes</h2>
+            </ion-item>
+          </span>
+          <span class="options-wrapper" *ngIf="data.audioData">
+            <span>{{i+1}} </span>
+            <audio controls controlsList="nodownload">
+              <source [src]="data.audioData" type="audio/wav">
+            </audio>
+            <span>has {{data?.votes}} votes</span>
+          </span>
+        </ion-item>
+      </ion-list>
+
+    </ion-card>
+  </div>
+  <ng-template #commentsTemplate>
+    <hr>
+    <div text-center>
+      <h2 class="Time_heading">Timeline</h2>
+    </div>
+    <hr>
+    <h4 text-center>Survey Details</h4>
+    <ion-list>
+      <ion-list-header>
+        <h2 class="survey-title">{{survey?.title}}</h2>
+      </ion-list-header>
+      <ion-item *ngFor="let data of surveyData; let i=index" text-wrap>
+        <ion-card>
+          <ion-card-header>
+            {{data?.name}} {{data.action}} his vote
+            <div class="showDateTime">{{data.votedTime}}</div>
+          </ion-card-header>
+
+          <ion-item *ngFor="let comment of data.commentsArray; let i=index">
+            {{i+1}}-
+            <b>{{comment?.key}}</b> :{{comment?.value}}
+          </ion-item>
+        </ion-card>
+      </ion-item>
+    </ion-list>
+
+  </ng-template>
+
+  <ion-list *ngIf="!typeComments">
+    <hr>
+    <div text-center>
+      <h2 class="Time_heading">Timeline</h2>
+    </div>
+    <hr>
+    <ion-item *ngFor="let item of items" text-wrap>
+      <ion-card>
+        <ion-card-header>
+          {{item.votedPerson}} {{item.action}} his vote
+          <div class="showDateTime">{{item.votedTime}}</div>
+        </ion-card-header>
+        <ion-card-content>
+          <div *ngFor="let data of item.votedOptions; let i = index">
+            <span *ngIf="data.name">
+              {{i+1}} - {{data?.name}}
+            </span>
+            <span class="options-wrapper" *ngIf="data.videoId">
+              <span>{{i+1}}</span>
+              <ion-item *ngIf="data.videoId" class="ion_item-video">
+                <ion-thumbnail item-start (click)="playVideo(data.videoId)">
+                  <img src={{data.videoThumbnail}}>
+                </ion-thumbnail>
+                <p>{{ data.videoTitle }}</p>
+              </ion-item>
+            </span>
+            <span class="options-wrapper" *ngIf="data.imageUrl">
+              <span>{{i+1}} </span>
+              <ion-item>
+                <ion-thumbnail item-start>
+                  <img [src]="_DomSanitizer.bypassSecurityTrustUrl(data.imageUrl)">
+                </ion-thumbnail>
+              </ion-item>
+            </span>
+            <span class="options-wrapper" *ngIf="data.audioData">
+              <span>{{i+1}} </span>
+              <audio controls controlsList="nodownload">
+                <source [src]="data.audioData" type="audio/wav">
+              </audio>
+            </span>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+
+  </ion-list>
+</ion-content>
