@@ -51,7 +51,7 @@ export class DataService {
   async updateSurvey(userId, survey, key) {
     this.surveyList = this.database.list(`/users/${userId}/surveys/`);
     try {
-      await this.surveyList.set(key, survey);
+      await this.surveyList.update(key, survey);
     }
     catch (error) {
       console.log(error);
@@ -80,18 +80,9 @@ export class DataService {
   }
   updateRecievedSurvey(survey, surveyKey, user) {
     this.recievedSurveyList = this.database.list(`/users/${user.uid}/recieved-surveys/`);
-    this.recievedSurveyList.set(surveyKey, survey);
+    this.recievedSurveyList.update(surveyKey, survey);
   }
 
-  // saveCommentsSurveyData(userId, commentsData) {
-  //   this.commentsData = this.database.list(`/users/${userId}/comments-data/`);
-  //   return this.commentsData.push(commentsData);
-  // }
-
-  // updateCommentsSurveyData(userId, commentsSurveyKey, commentsData) {
-  //   this.commentsData = this.database.list(`/users/${userId}/comments-data/`);
-  //   this.commentsData.set(commentsSurveyKey, commentsData);
-  // }
 
   getCommentsData(surveyId, userId) {
     return this.commentsData = this.database.list(`/users/${userId}/comments-data/`)

@@ -13,7 +13,7 @@ declare var FCMPlugin;
 })
 export class MyApp {
 
-  rootPage: string = 'LoginPage';
+  rootPage: string = 'TabsPage';
   requiredString: string;
   surveyId: string;
   parentId: string
@@ -30,7 +30,7 @@ export class MyApp {
     private alertCtrl: AlertController,
     private app: App) {
 
-    this.authService.getAuthenticatedUser().subscribe(auth => {
+    this.authService.getAuthenticatedUser().subscribe(auth => {debugger
       if (auth) {
         if (this.incomingNotification) {
           this.navChild.push('SurveyStatsPage', { userId: this.data.fromId, surveyId: this.data.fromKey });

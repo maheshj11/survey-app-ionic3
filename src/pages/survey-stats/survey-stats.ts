@@ -45,21 +45,23 @@ export class SurveyStatsPage implements OnInit {
     this.surveyId = this.navParams.get('surveyId');
     this.loader.present();
     this.userId = this.navParams.get('userId');
-    this.dataService.getSurvey(this.surveyId, this.userId).subscribe(data => {
+    this.dataService.getSurvey(this.surveyId, this.userId).subscribe((data: Survey) => {debugger
       this.loader.dismiss();
       this.survey = data;
       if (this.survey.type === "Comments") {
         this.typeComments = true;
         this.commentsArray = [];
-        data.votesData.map(a => {
-          a.votedOption.map(data => {
-            for (let key in data) {
-              this.commentsArray.push({ key: key, value: data[key] });
-            }
+        if (data.votesData) {
+          data.votesData.map(a => {
+            a.votedOption.map(data => {
+              for (let key in data) {
+                this.commentsArray.push({ key: key, value: data[key] });
+              }
+            })
+            let time = moment.unix(a.votedTime / 1000).format("DD MMM YYYY hh:mm a");
+            this.surveyData.push({ action: a.action, name: a.votedPersonName, commentsArray: this.commentsArray, votedTime: time });
           })
-          let time = moment.unix(a.votedTime/1000).format("DD MMM YYYY hh:mm a");
-          this.surveyData.push({action: a.action, name: a.votedPersonName, commentsArray: this.commentsArray, votedTime: time });
-        })
+        }
       }
       else {
         let y = new Array();
@@ -77,8 +79,8 @@ export class SurveyStatsPage implements OnInit {
             this.surveyData.push({ videoId: data.videoId, videoThumbnail: data.videoThumbnail, videoTitle: data.videoTitle, votes: data.totalVotes });
             y.push(`Video ${i + 1}`);
           }
-          if (data.audioData) {
-            this.surveyData.push({ audioData: data.audioData, votes: data.totalVotes });
+          if (data.audioUrl) {
+            this.surveyData.push({ audioData: data.audioUrl, votes: data.totalVotes });
             y.push(`Video ${i + 1}`);
           }
           z.push(data.totalVotes);
@@ -86,30 +88,31 @@ export class SurveyStatsPage implements OnInit {
         this.pieChartData = z
         this.pieChartType = 'pie';
         this.pieChartLabels = y;
-
-        data.votesData.map(a => {
-          this.matchedOption = [];
-          a.votedOption.map(item => {
-            this.survey.optionsData.map((data,i) => {
-              if(item === data.id){
-                if (data.name) {
-                  this.matchedOption.push({ name: data.name, votes: data.totalVotes });
+        if (data.votesData) {
+          data.votesData.map(a => {
+            this.matchedOption = [];
+            a.votedOption.map(item => {
+              this.survey.optionsData.map((data, i) => {
+                if (item === data.id) {
+                  if (data.name) {
+                    this.matchedOption.push({ name: data.name, votes: data.totalVotes });
+                  }
+                  if (data.imageUrl) {
+                    this.matchedOption.push({ imageUrl: data.imageUrl, votes: data.totalVotes });
+                  }
+                  if (data.videoId) {
+                    this.matchedOption.push({ videoId: data.videoId, videoThumbnail: data.videoThumbnail, videoTitle: data.videoTitle, votes: data.totalVotes });
+                  }
+                  if (data.audioUrl) {
+                    this.matchedOption.push({ audioData: data.audioUrl, votes: data.totalVotes });
+                  }
                 }
-                if (data.imageUrl) {
-                  this.matchedOption.push({ imageUrl: data.imageUrl, votes: data.totalVotes });
-                }
-                if (data.videoId) {
-                  this.matchedOption.push({ videoId: data.videoId, videoThumbnail: data.videoThumbnail, videoTitle: data.videoTitle, votes: data.totalVotes });
-                }
-                if (data.audioData) {
-                  this.matchedOption.push({ audioData: data.audioData, votes: data.totalVotes });
-                }
-              }
-            })
-          });
-          let time = moment.unix(a.votedTime/1000).format("DD MMM YYYY hh:mm a");
-          this.items.push({action: a.action, votedPerson: a.votedPersonName, votedTime: time, votedOptions: this.matchedOption });
-        })
+              })
+            });
+            let time = moment.unix(a.votedTime / 1000).format("DD MMM YYYY hh:mm a");
+            this.items.push({ action: a.action, votedPerson: a.votedPersonName, votedTime: time, votedOptions: this.matchedOption });
+          })
+        }
       }
     })
   }

@@ -15,13 +15,14 @@ declare var FCMPlugin;
   selector: 'page-home',
   templateUrl: 'home.html',
 })
-export class HomePage implements OnInit {
+export class HomePage {
   private authenticatedUser: User;
-  surveyList: Survey[];
+  surveyList: Survey[]
   loader: Loading;
   showedAlert: boolean;
   confirmAlert: any;
   emptyList: boolean;
+  loaderPresent= false;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -31,37 +32,51 @@ export class HomePage implements OnInit {
     private socialSharing: SocialSharing,
     private alertCtrl: AlertController) {
     this.authService.getAuthenticatedUser().subscribe((user: User) => {
-      this.authenticatedUser = user;
-    })
-    this.loader = this.loadingCtrl.create({
-      content: 'Loading Surveys'
-    })
-  }
+      if (user) {
+        if(!this.loaderPresent){
+          this.loaderstart();
+          this.loader.present();
+          this.loaderPresent = true;
+        }
+        this.authenticatedUser = user;
+        if (this.authenticatedUser) {
+          this.dataService.getSurveys(this.authenticatedUser).subscribe((data: Survey[]) => {
+            if (data.length === 0) {
+              this.emptyList = true;
+            }
+            this.surveyList = data;
+            //this.surveyList = Object.assign([],data);
+            console.log(data);
+            this.loader.dismiss();
+          });
 
-  ngOnInit() {
-    this.loader.present();
-    this.dataService.getSurveys(this.authenticatedUser).subscribe(data => {
-      if(data.length === 0){
-        this.emptyList = true;
+          let $this = this;
+          if (typeof FCMPlugin != 'undefined') {
+            this.tokenSetup().then((token) => {
+              const tokenData = {
+                uid: $this.authenticatedUser.uid,
+                deviceToken: token
+              };
+              console.log(tokenData);
+              this.dataService.storeToken(tokenData, this.authenticatedUser.uid);
+            })
+          }
+        }
       }
-      this.surveyList = data;
-      console.log(data);      
-      this.loader.dismiss();
-    });
-
-    let $this = this;
-    if (typeof FCMPlugin != 'undefined') {
-      this.tokenSetup().then((token) => {
-        const tokenData = {
-          uid: $this.authenticatedUser.uid,
-          deviceToken: token
-        };
-        console.log(tokenData);
-        this.dataService.storeToken(tokenData,this.authenticatedUser.uid);
-      })
-    }
+      else {
+        this.navCtrl.setRoot("LoginPage")
+      }
+    })
   }
 
+  // ionViewWillEnter(){
+  //   this.loaderstart()
+  // }
+  loaderstart() {
+    this.loader = this.loadingCtrl.create({
+      content: 'Please wait'
+    })
+  }
 
   tokenSetup() {
     var promise = new Promise((resolve, reject) => {
@@ -84,7 +99,24 @@ export class HomePage implements OnInit {
   }
 
   removeSurvey(item: ItemSliding, survey) {
-    this.dataService.deleteSurvey(this.authenticatedUser, survey);
+    const alert = this.alertCtrl.create({
+      title: "Delete Survey",
+      message: "Would you like to delete the survey?",
+      buttons: [
+        {
+          text: 'No',
+          role: 'Cancel',
+          handler: () => { }
+        },
+        {
+          text: 'YES',
+          handler: () => {
+            this.dataService.deleteSurvey(this.authenticatedUser, survey);
+          }
+        }
+      ]
+    });
+    alert.present();
     item.close();
   }
 
@@ -92,7 +124,7 @@ export class HomePage implements OnInit {
     this.navCtrl.push('EditSurveyPage', { survey: survey });
   }
 
-  enableSurvey(item: ItemSliding, clickedSurvey) {debugger
+  enableSurvey(item: ItemSliding, clickedSurvey) {
     const survey = clickedSurvey;
     const alert = this.alertCtrl.create({
       title: "Enable Survey",
@@ -100,22 +132,22 @@ export class HomePage implements OnInit {
       buttons: [
         {
           text: 'No',
-          role:'Cancel',
-          handler: () => {}
+          role: 'Cancel',
+          handler: () => { }
         },
         {
           text: 'YES',
-          handler:() => {debugger
+          handler: () => {
             survey.disabled = false;
             this.dataService.updateSurvey(this.authenticatedUser.uid, survey, survey.$key);
           }
         }
       ]
     });
-   alert.present();
-   item.close();
+    alert.present();
+    item.close();
   }
-  disableSurvey(item: ItemSliding, clickedSurvey) {debugger
+  disableSurvey(item: ItemSliding, clickedSurvey) {
     const survey = clickedSurvey;
     const alert = this.alertCtrl.create({
       title: "Disable Survey",
@@ -123,20 +155,20 @@ export class HomePage implements OnInit {
       buttons: [
         {
           text: 'No',
-          role:'Cancel',
-          handler: () => {}
+          role: 'Cancel',
+          handler: () => { }
         },
         {
           text: 'YES',
-          handler:() => {debugger
+          handler: () => {
             survey.disabled = true;
             this.dataService.updateSurvey(this.authenticatedUser.uid, survey, survey.$key);
           }
         }
       ]
     });
-   alert.present();
-   item.close();
+    alert.present();
+    item.close();
   }
   shareSurvey(item: ItemSliding, survey) {
     this.socialSharing.share("You are invited to vote for survey", null, null, `https://surveyapp-e8b88.firebaseapp.com/vote/${this.authenticatedUser.uid}/${survey.$key}`)

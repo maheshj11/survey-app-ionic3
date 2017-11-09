@@ -10,7 +10,7 @@
   <h3 padding>{{survey?.title}}</h3>
 
   <ion-list *ngIf="typeSingle" radio-group>
-    <ion-item *ngFor="let options of survey.optionsData">
+    <ion-item *ngFor="let options of survey.optionsData" text-wrap>
       <ion-label *ngIf="options.type === 'text'">{{options.name}}</ion-label>
       <ion-label *ngIf="options.type === 'image'">
         <ion-thumbnail item-start>
@@ -18,7 +18,7 @@
         </ion-thumbnail>
       </ion-label>
       <ion-label *ngIf="options.type === 'audio'">
-        <audio controls controlsList="nodownload">
+        <audio class="audio-tag" controls controlsList="nodownload">
           <source [src]="options.audioUrl" type="audio/wav">
         </audio>
       </ion-label>
@@ -37,7 +37,7 @@
   </ion-list>
 
   <ion-list *ngIf="typeMultiple">
-    <ion-item *ngFor="let options of survey.optionsData">
+    <ion-item *ngFor="let options of survey.optionsData" text-wrap>
       <ion-label *ngIf="options.type === 'text'">{{options.name}}</ion-label>
       <ion-label *ngIf="options.type === 'image'">
         <ion-thumbnail item-start>
@@ -45,7 +45,7 @@
         </ion-thumbnail>
       </ion-label>
       <ion-label *ngIf="options.type === 'audio'">
-        <audio controls controlsList="nodownload">
+        <audio class="audio-tag" controls controlsList="nodownload">
           <source [src]="options.audioUrl" type="audio/wav">
         </audio>
       </ion-label>
@@ -63,7 +63,7 @@
   </ion-list>
  
   <ion-list *ngIf="typeComments">
-    <ion-item *ngFor="let options of survey.commentsData">
+    <ion-item *ngFor="let options of survey.commentsData" text-wrap>
       <ion-label floating>{{options.name}}</ion-label>
       <ion-textarea [(ngModel)]="options.surveyComments"></ion-textarea>
     </ion-item>

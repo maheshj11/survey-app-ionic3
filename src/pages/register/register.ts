@@ -1,4 +1,4 @@
-import { ToastController, LoadingController,Loading } from 'ionic-angular';
+import { ToastController, LoadingController, Loading } from 'ionic-angular';
 import { AuthService } from './../../providers/auth/auth.service';
 import { Account } from './../../models/account/account.interface';
 import { Component } from '@angular/core';
@@ -14,15 +14,15 @@ import { IonicPage } from 'ionic-angular';
 export class RegisterPage {
 
   account = {} as Account;
-  loader : Loading;
+  loader: Loading;
 
   constructor(private auth: AuthService,
     private loadingCtrl: LoadingController,
-              private toastCtrl: ToastController) {
-                this.loader = this.loadingCtrl.create({
-                  content: 'Registering You!!!'
-                })
-              }
+    private toastCtrl: ToastController) {
+    this.loader = this.loadingCtrl.create({
+      content: 'Registering You!!!'
+    })
+  }
 
 
   register() {

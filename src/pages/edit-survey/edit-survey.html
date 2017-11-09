@@ -49,11 +49,11 @@
         <button *ngIf="item.type === 'text'" ion-button icon-only clear item-right (click)="removeData(i)"><ion-icon color="danger" name="close"></ion-icon></button>
 
         <div class="options-container-div" *ngIf="item.type === 'image'">
-          <button type="button" ion-button outline (click)=onTakePicture(i) icon-left>
+          <button type="button" ion-button  class="option-button" (click)=onTakePicture(i) icon-left>
               <ion-icon name="camera"></ion-icon>
               OpenCamera
             </button>
-          <button type="button" ion-button outline (click)=onaddPicture(i) icon-left>
+          <button type="button" ion-button  class="option-button" (click)=onaddPicture(i) icon-left>
                 <ion-icon name="camera"></ion-icon>
                 Browse
             </button>
@@ -64,12 +64,12 @@
         </div>
 
         <div *ngIf="item.type === 'audio'" class="options-container-div">
-          <button type="button" outline ion-button icon-left (click)=onStartAudioRecording(i)>
+          <button type="button"  class="option-button" ion-button icon-left (click)=onStartAudioRecording(i)>
             <ion-icon name="mic"></ion-icon>
             Record Audio
           </button>
           <div>
-            <audio controls *ngIf="item.audioUrl">
+            <audio class="audio-tag" controls *ngIf="item.audioUrl">
               <source [src]="item.audioUrl" type="audio/wav">
             </audio>
             <ion-icon class="option-icon" color="danger" name="close" (click)="removeData(i)"></ion-icon>
@@ -77,7 +77,7 @@
         </div>
 
         <div *ngIf="item.type === 'video'" class="options-container-div">
-          <button *ngIf="!item.videoId" type="button" outline ion-button icon-left (click)="addYouTubeUrl(i)">
+          <button *ngIf="!item.videoId" type="button"  class="option-button" ion-button icon-left (click)="addYouTubeUrl(i)">
             <ion-icon name="videocam"></ion-icon>
             YouTube Link
           </button>

@@ -12,14 +12,11 @@
     <img src="assets/img/logo.png" alt="Logo" class="logo">
   </div>
   <form #loginForm="ngForm">
-    <ion-card>
       <ion-card-content>
         <ion-card-title text-center color="primary">Login</ion-card-title>
         <div>
-        <button ion-button block class="google" (click)="signInWithGoogle()">
-          Login With Google
-        </button>
-        <button ion-button block class="facebook" (click)="signInWithFb()">
+        <button ion-button type="button" block class="facebook" (click)="signInWithFb()" icon-left>
+          <ion-icon name="logo-facebook"></ion-icon>
           Login With Facebook
         </button>
       </div>
@@ -43,12 +40,14 @@
         <div padding *ngIf="password.invalid && password.dirty">
           <span class="global_input-error">Password must be atleast 6 characters</span>
         </div>
-
+        
       </ion-card-content>
-      <ion-row class="login-form_buttons">
+      <div class="login-form_buttons">
         <button ion-button (click)="login()" [disabled]="loginForm.invalid">Login</button>
         <button ion-button color="secondary" (click)="goToRegisterPage('RegisterPage')">Register</button>
-      </ion-row>
-    </ion-card>
+      </div>
+      <div class="forgt">
+        <a (click)="passReset()">Forgot password?</a>
+    </div>
   </form>
 </ion-content>

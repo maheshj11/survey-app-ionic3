@@ -20,8 +20,14 @@ page-submit-vote {
     .video_checkbox_button{
         padding-left: 10px;
     }
-    .ion_item-video>.item-inner{
-        border-bottom: none !important;
+    .ion_item-video{
         padding-left: 0px !important;
+        .item-inner{
+            border-bottom: none !important;
+            padding-left: 0px !important;
+        }
+    }
+    .audio-tag{
+        width: 200px!important;
     }
 }

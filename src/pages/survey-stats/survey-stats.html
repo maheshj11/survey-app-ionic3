@@ -44,7 +44,7 @@
           </span>
           <span class="options-wrapper" *ngIf="data.audioData">
             <span>{{i+1}} </span>
-            <audio controls controlsList="nodownload">
+            <audio class="audio-tag"controls controlsList="nodownload">
               <source [src]="data.audioData" type="audio/wav">
             </audio>
             <span>has {{data?.votes}} votes</span>
@@ -118,7 +118,7 @@
             </span>
             <span class="options-wrapper" *ngIf="data.audioData">
               <span>{{i+1}} </span>
-              <audio controls controlsList="nodownload">
+              <audio class="audio-tag" controls controlsList="nodownload">
                 <source [src]="data.audioData" type="audio/wav">
               </audio>
             </span>

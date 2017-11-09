@@ -24,9 +24,9 @@ export class LoginPage {
               private loadingCtrl: LoadingController,
               private toastCtrl: ToastController,
               private fb: Facebook) {
-                this.loader = this.loadingCtrl.create({
-                  content: 'Loggin You In!!!'
-                })
+                // this.loader = this.loadingCtrl.create({
+                //   content: 'Please wait'
+                // })
   }
 
 
@@ -34,15 +34,17 @@ export class LoginPage {
     this.navCtrl.push('RegisterPage')
   }
 
-  showEmailLogin() {
-    if (this.showLoginWithEmail == false) {
-      this.showLoginWithEmail = true;
-    }
-    else {
-      this.showLoginWithEmail = false;
-    }
+  passReset() {
+    this.navCtrl.push('ForgotPasswordPage');
   }
+  loaderstart(){
+    this.loader = this.loadingCtrl.create({
+      content: 'Please wait'
+    })
+  }
+
   signInWithFb(){
+    this.loaderstart();
     this.loader.present();
     this.fb.login(['email'])
     .then((res: FacebookLoginResponse) => {
@@ -52,12 +54,11 @@ export class LoginPage {
         this.navCtrl.push('TabsPage');
       })
     })
-    .catch(e => console.log('Error logging into Facebook', e));
+    .catch(e => {console.log('Error logging into Facebook', e); this.loader.dismiss();});
   }
-  signInWithGoogle() {
-    this.auth.signInWithGoogle();
-  }
+
   login() {
+    this.loaderstart();
     this.loader.present();
     this.auth.signInWithEmailPassword(this.account)
     .then(data => {

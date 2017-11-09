@@ -136,7 +136,7 @@ export class EditSurveyPage implements OnInit {
     if (event === "Comments") {
       this.typeSingle = false;
       if (this.commentsData.length === 0) {
-        this.commentsData.push({ name: "", totalVotes: 0, id: "ID" + Math.random(), checked: false })
+        this.commentsData.push({ name: "", totalVotes: 0, id: "ID" + Math.random(), checked: false})
       }
     }
     else {
@@ -188,7 +188,7 @@ export class EditSurveyPage implements OnInit {
   }
   addMoreOption(data) {
     if (data === "image") {
-      this.optionsData.push({ type: 'image', imageUrl: "", totalVotes: 0, id: "ID" + Math.random(), checked: false })
+      this.optionsData.push({ type: 'image', imageUrl: "", totalVotes: 0, id: "ID" + Math.random(), checked: false})
       this.imageChecked = true;
       this.audioChecked = false;
       this.videoChecked = false;
@@ -196,7 +196,7 @@ export class EditSurveyPage implements OnInit {
       this.optionsDataCount++;
     }
     else if (data === "audio") {
-      this.optionsData.push({ type: 'audio', audioUrl: "", totalVotes: 0, id: "ID" + Math.random(), checked: false })
+      this.optionsData.push({ type: 'audio', audioUrl: "", totalVotes: 0, id: "ID" + Math.random(), checked: false})
       this.audioChecked = true;
       this.imageChecked = false;
       this.videoChecked = false;
@@ -204,7 +204,7 @@ export class EditSurveyPage implements OnInit {
       this.optionsDataCount++;
     }
     else if (data === "video") {
-      this.optionsData.push({ type: 'video', videoId: "", totalVotes: 0, id: "ID" + Math.random(), checked: false })
+      this.optionsData.push({ type: 'video', videoId: "", totalVotes: 0, id: "ID" + Math.random(), checked: false})
       this.videoChecked = true;
       this.imageChecked = false;
       this.audioChecked = false;
@@ -213,14 +213,14 @@ export class EditSurveyPage implements OnInit {
     }
     else {
       if (this.typeSingle) {
-        this.optionsData.push({ type: 'text', name: "", totalVotes: 0, id: "ID" + Math.random(), checked: false })
+        this.optionsData.push({ type: 'text', name: "", totalVotes: 0, id: "ID" + Math.random(), checked: false})
         this.optionsDataCount++;
         this.textChecked = true;
         this.imageChecked = false;
         this.audioChecked = false;
         this.videoChecked = false;
       } else {
-        this.commentsData.push({ name: "", totalVotes: 0, id: "ID" + Math.random(), checked: false })
+        this.commentsData.push({ name: "", totalVotes: 0, id: "ID" + Math.random(), checked: false})
         this.commentsDataCount++;
       }
     }

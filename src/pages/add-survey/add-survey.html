@@ -64,7 +64,7 @@
           Record Audio
         </button>
           <div>
-            <audio controls *ngIf="item.audioUrl">
+            <audio class="audio-tag" controls *ngIf="item.audioUrl">
               <source [src]="item.audioUrl" type="audio/wav">
             </audio>
             <ion-icon class="option-icon" color="danger" name="close" (click)="removeData(i)"></ion-icon>

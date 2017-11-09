@@ -1,5 +1,5 @@
+import { Profile } from './../../models/profile/profile.interface';
 import { Survey } from './../../models/survey/survey.interface';
-import { Profile } from '../../models/profile/profile.interface';
 import { RecievedSurvey } from '../../models/survey/recieved-survey.interface';
 import { User } from 'firebase/app';
 import { AuthService } from './../../providers/auth/auth.service';
@@ -53,17 +53,9 @@ export class SubmitVotePage implements OnInit {
     private authService: AuthService,
     public _DomSanitizer: DomSanitizer,
     private toastCtrl: ToastController) {
-    this.loader = this.loadingCtrl.create({
-      content: 'Loading Survey'
-    })
-    this.authService.getAuthenticatedUser().subscribe((user: User) => {
-      this.authenticatedUser = user;
-      if (this.authenticatedUser) {
-        this.dataService.getProfile(this.authenticatedUser).subscribe(result => {
-          this.profile = result;
-        })
-      }
-    })
+      this.loader = this.loadingCtrl.create({
+        content: 'Loading Survey'
+      })
   }
 
   ngOnInit() {
@@ -72,107 +64,112 @@ export class SubmitVotePage implements OnInit {
     this.surveyKey = this.navParams.get('surveyKey');
     this.commentsSurveyKey = this.navParams.get('commentsSurveyKey')
     this.loader.present();
-
-    if (this.authenticatedUser) {
-      if (this.authenticatedUser.uid !== this.userId) {
-        this.dataService.getRecievedSurveys(this.authenticatedUser).subscribe(data => {
-          data.map(item => {
-            if (item.fromKey === this.surveyId) {
-              this.votedData = item.dataVoted;
-              this.didVote = item.didVote;
-              this.inRecievedList = true;
-              this.surveyKey = item.$key;
-              //this.commentsSurveyKey = item.commentsSurveyKey;
-              if (item.commentsArray) {
-                item.commentsArray.map(a => {
-                  for (let key in a) {
-                    this.oldCommentsArray.push({ key: key, value: a[key] });
-                  }
-                })
-              }
-            }
-          })
+    this.authService.getAuthenticatedUser().subscribe((user: User) => {
+      this.authenticatedUser = user;
+      if (this.authenticatedUser) {
+        this.dataService.getProfile(this.authenticatedUser).subscribe((result:Profile) => {
+          this.profile = result;
         })
-        this.dataService.getSurvey(this.surveyId, this.userId).subscribe(data => {
-          this.loader.dismiss();
-          this.survey = data;
-          if(this.survey.disabled === true){
-            this.surveyDisabled = true;
-            return;
-          }
-          if (!this.inRecievedList) {
-            const recievedSurvey: RecievedSurvey = {
-              votedUserName: this.profile.firstName || this.authenticatedUser.displayName || this.authenticatedUser.email,
-              fromId: this.userId,
-              description: this.survey.description || null,
-              title: this.survey.title,
-              fromKey: this.surveyId,
-              didVote: false
-            }
-            this.dataService.saveRecievedSurvey(recievedSurvey, this.authenticatedUser).then(data => {
-
-              this.surveyKey = data.key;
-              localStorage.removeItem('userId');
-              localStorage.removeItem('surveyId');
-            })
-          }
-          if (this.votedData) {
-            let x;
-            for (x in this.survey) {
-              if (Array.isArray(this.survey[x])) {
-                this.survey[x].map(data => {
-                  this.votedData.map(id => {
-                    if (data.id === id) {
-                      data.votedOption = true;
+        if (this.authenticatedUser.uid !== this.userId) {
+          this.dataService.getRecievedSurveys(this.authenticatedUser).subscribe((data:RecievedSurvey[]) => {
+            data.map(item => {
+              if (item.fromKey === this.surveyId) {
+                this.votedData = item.dataVoted;
+                this.didVote = item.didVote;
+                this.inRecievedList = true;
+                this.surveyKey = item.$key;
+                //this.commentsSurveyKey = item.commentsSurveyKey;
+                if (item.commentsArray) {
+                  item.commentsArray.map(a => {
+                    for (let key in a) {
+                      this.oldCommentsArray.push({ key: key, value: a[key] });
                     }
                   })
-                })
-              }
-            }
-          }
-          if (this.survey.surveyDate) {
-            const a = `${this.survey.surveyDate} ${this.survey.surveyTime}`;
-            const surveyDateTime = new Date(a);
-            this.dateTime = moment(surveyDateTime);
-            this.dataService.getCurrentTime().then(data => {
-              const serverTime = moment(data)
-              const surveyTime = this.dateTime;
-              let s = serverTime.isSameOrAfter(surveyTime);
-              if (s) {
-                this.surveyTimeout = true;
+                }
               }
             })
-          }
-          if (this.survey.type === "Single") {
-            this.typeSingle = true;
-          }
-          else if (this.survey.type === "Multiple") {
-            this.typeMultiple = true;
-          }
-          else {
-            this.typeComments = true;
-          }
-        });
+          })
+          this.dataService.getSurvey(this.surveyId, this.userId).subscribe((data:Survey) => {
+            this.loader.dismiss();
+            this.survey = data;
+            if(this.survey.disabled === true){
+              this.surveyDisabled = true;
+              return;
+            }
+            if (!this.inRecievedList) {
+              const recievedSurvey: RecievedSurvey = {
+                votedUserName: this.profile.firstName || this.authenticatedUser.displayName || this.authenticatedUser.email,
+                fromId: this.userId,
+                description: this.survey.description || null,
+                title: this.survey.title,
+                fromKey: this.surveyId,
+                didVote: false
+              }
+              this.dataService.saveRecievedSurvey(recievedSurvey, this.authenticatedUser).then(data => {
+  
+                this.surveyKey = data.key;
+                localStorage.removeItem('userId');
+                localStorage.removeItem('surveyId');
+              })
+            }
+            if (this.votedData) {
+              let x;
+              for (x in this.survey) {
+                if (Array.isArray(this.survey[x])) {
+                  this.survey[x].map(data => {
+                    this.votedData.map(id => {
+                      if (data.id === id) {
+                        data.votedOption = true;
+                      }
+                    })
+                  })
+                }
+              }
+            }
+            if (this.survey.surveyDate) {
+              const a = `${this.survey.surveyDate} ${this.survey.surveyTime}`;
+              const surveyDateTime = new Date(a);
+              this.dateTime = moment(surveyDateTime);
+              this.dataService.getCurrentTime().then(data => {
+                const serverTime = moment(data)
+                const surveyTime = this.dateTime;
+                let s = serverTime.isSameOrAfter(surveyTime);
+                if (s) {
+                  this.surveyTimeout = true;
+                }
+              })
+            }
+            if (this.survey.type === "Single") {
+              this.typeSingle = true;
+            }
+            else if (this.survey.type === "Multiple") {
+              this.typeMultiple = true;
+            }
+            else {
+              this.typeComments = true;
+            }
+          });
+        }
+        else {
+          this.sameUser = true;
+          localStorage.removeItem('userId');
+          localStorage.removeItem('surveyId');
+          this.loader.dismiss();
+        }
       }
       else {
-        this.sameUser = true;
-        localStorage.removeItem('userId');
-        localStorage.removeItem('surveyId');
+        localStorage.setItem('userId', this.userId);
+        localStorage.setItem('surveyId', this.surveyId);
+        const toast = this.toastCtrl.create({
+          message: 'You need to login before submiting your Vote',
+          duration: 2000,
+          position: 'bottom'
+        })
+        toast.present();
         this.loader.dismiss();
+        this.navCtrl.setRoot("LoginPage")
       }
-    }
-    else {
-      localStorage.setItem('userId', this.userId);
-      localStorage.setItem('surveyId', this.surveyId);
-      const toast = this.toastCtrl.create({
-        message: 'You need to login before submiting your Vote',
-        duration: 2000,
-        position: 'bottom'
-      })
-      toast.present();
-      this.loader.dismiss();
-      this.navCtrl.setRoot("LoginPage")
-    }
+    })
   }
 
   playVideo(videoId) {

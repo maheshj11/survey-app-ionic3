@@ -8,7 +8,7 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngIf="emptyList">Nothing to display</ion-item>
+    <ion-item text-center *ngIf="emptyList">You do not have any survyes to vote.</ion-item>
     <ion-item (click)="goToSubmitVotePage(survey)" *ngFor="let survey of surveyList">
       <ion-icon color="secondary" *ngIf="survey.didVote === true" item-right name="checkmark"></ion-icon>
       <ion-icon color="danger" *ngIf="survey.didVote !== true" item-right name="close"></ion-icon>

@@ -21,7 +21,7 @@ export class ProfilePage {
   updateProfile: boolean = false;
   account = {} as Account;
   loader: Loading;
-  socialLogin:boolean = false;
+  socialLogin: boolean = false;
 
   constructor(private navCtrl: NavController,
     private navParams: NavParams,
@@ -30,26 +30,28 @@ export class ProfilePage {
     private appCtrl: App,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController) {
-      this.loader = this.loadingCtrl.create({
-        content: 'Loading Profile!!!'
-      })
+    this.loader = this.loadingCtrl.create({
+      content: 'Loading Profile!!!'
+    })
   }
 
   ngOnInit() {
     this.loader.present();
     this.authService.getAuthenticatedUser().subscribe((user: User) => {
       this.authenticatedUser = user;
-      if(this.authenticatedUser.displayName){debugger
-        this.socialLogin = true;
+      if (this.authenticatedUser) {
+        if (this.authenticatedUser.displayName) {
+          this.socialLogin = true;
+        }
       }
-      this.dataService.getProfile(this.authenticatedUser).subscribe(result => {
+      this.dataService.getProfile(this.authenticatedUser).subscribe((result: Profile) => {
         this.loader.dismiss();
         if (result.firstName) {
           this.updateProfile = true;
           this.profile = result;
         }
         else {
-          if(this.authenticatedUser.displayName){
+          if (this.authenticatedUser.displayName) {
             let name = this.authenticatedUser.displayName
             let arrName = name.split(" ");
             let firstName = arrName.slice(0, 1).join(' ');
@@ -86,16 +88,16 @@ export class ProfilePage {
     this.loader.present();
     this.authService.signOut();
     this.appCtrl.getRootNav().setRoot('LoginPage')
-    .then(data => {
-      this.loader.dismiss();
-    })
-    .catch(error => {
-      this.loader.dismiss();
-      const Toast = this.toastCtrl.create({
-        duration: 2000,
-        message: error.message
+      .then(data => {
+        this.loader.dismiss();
       })
-      Toast.present()
-    })
+      .catch(error => {
+        this.loader.dismiss();
+        const Toast = this.toastCtrl.create({
+          duration: 2000,
+          message: error.message
+        })
+        Toast.present()
+      })
   }
 }
