@@ -11,4 +11,17 @@ page-register {
         padding: 10px;
         float: right
     }
+    .terms_div{
+        display: block;
+        ion-checkbox {
+            float: left;
+            margin: 0px 5px 0px 20px;
+        }
+        a {
+            text-decoration: none;
+        }
+    }
+    .register_button{
+        text-align: center
+    }
 }

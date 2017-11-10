@@ -9,7 +9,6 @@ page-login {
         height: 140px;
         }
     .login-form_buttons{
-        padding: 10px;
         text-align: center;
         display: block;
 
@@ -26,12 +25,22 @@ page-login {
         text-align: center;
         font-weight: bolder;
         font-size: 22px;
-        margin-top: 12px;
+        margin:0px;
     }
     .google {
-        background-color: #dd4b39 !important;
+        background-color: #dc4a39 !important;
       }
     .facebook {
         background-color: #3b5998 !important;
+    }
+    .terms_div{
+        display: block;
+        ion-checkbox {
+            float: left;
+            margin: 0px 5px 0px 20px;
+        }
+        a {
+            text-decoration: none;
+        }
     }
 }

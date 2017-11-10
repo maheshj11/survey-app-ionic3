@@ -218,7 +218,7 @@ export class AddSurveyPage implements OnInit {
     this.imagePicker.getPictures(options).then((result) => {
       if (result.length == 0) {
         return;
-      }debugger
+      }
       let filePath: string = result[0];
       this.base64.encodeFile(filePath).then((base64File: string) => {
         console.log(base64File);

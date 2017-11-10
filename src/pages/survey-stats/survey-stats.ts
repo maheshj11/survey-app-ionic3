@@ -45,7 +45,7 @@ export class SurveyStatsPage implements OnInit {
     this.surveyId = this.navParams.get('surveyId');
     this.loader.present();
     this.userId = this.navParams.get('userId');
-    this.dataService.getSurvey(this.surveyId, this.userId).subscribe((data: Survey) => {debugger
+    this.dataService.getSurvey(this.surveyId, this.userId).subscribe((data: Survey) => {
       this.loader.dismiss();
       this.survey = data;
       if (this.survey.type === "Comments") {

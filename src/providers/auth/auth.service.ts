@@ -14,7 +14,13 @@ export class AuthService {
   signInWithFb(cred) {
     return this.auth.auth.signInWithCredential(cred);
   }
-  sendResetEmail(email) {debugger
+
+  signInWithGoogle(cred) {debugger
+    return this.auth.auth.signInWithCredential(cred);
+  }
+
+
+  sendResetEmail(email) {
     return this.auth.auth.sendPasswordResetEmail(email);
   }
   createUserWithEmailPassword(account: Account) {

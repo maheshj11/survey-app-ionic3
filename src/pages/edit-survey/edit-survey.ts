@@ -454,7 +454,7 @@ export class EditSurveyPage implements OnInit {
 
   edit() {
     this.loader.present();
-    if(this.imageUpdated){debugger
+    if(this.imageUpdated){
       this.deleteAudio.map(data => {
         this.dataService.deleteAudio(data);
       })

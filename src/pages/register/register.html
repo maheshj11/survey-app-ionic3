@@ -12,7 +12,6 @@
     <img src="assets/img/logo.png" alt="Logo" class="logo">
   </div>
   <form #registerForm="ngForm">
-    <ion-card>
       <ion-card-content>
         <ion-card-title text-center color="primary">Sign Up</ion-card-title>
         <hr>
@@ -35,10 +34,13 @@
           <span class="global_input-error">Password must be atleast 6 characters</span>
         </div>
       </ion-card-content>
-      <ion-row>
-        <button ion-button color="secondary" (click)="register()" [disabled]="registerForm.invalid">Register</button>
-      </ion-row>
-    </ion-card>
+      <div class="terms_div">
+        <ion-checkbox [(ngModel)]="privacyCheckbox" (ionChange)="updateCheckbox()" name="privacyCheckbox"></ion-checkbox>
+        <p>I agree with the <a href="http://www.upforcetech.com/whatyousay/privacy_policy.html">privacy policy</a></p>
+      </div>
+      <div class="register_button">
+        <button ion-button color="secondary" (click)="register()" [disabled]="registerForm.invalid || !isChecked">Register</button>
+      </div>
   </form>
 
 </ion-content>

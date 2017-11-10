@@ -9,7 +9,7 @@ import { ImagePicker } from '@ionic-native/image-picker';
 import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player';
 import { MediaCapture } from '@ionic-native/media-capture';
 import { Deeplinks } from '@ionic-native/deeplinks';
-//import { GooglePlus } from '@ionic-native/google-plus';
+import { GooglePlus } from '@ionic-native/google-plus';
 import { Base64 } from '@ionic-native/base64';
 import { AdMobFree } from '@ionic-native/admob-free';
 
@@ -56,8 +56,8 @@ import { ChartsModule } from 'ng2-charts';
     Deeplinks,
     Facebook,
     Base64,
-    AdMobFree
-    //GooglePlus
+    AdMobFree,
+    GooglePlus
   ]
 })
 export class AppModule {}

@@ -12,42 +12,48 @@
     <img src="assets/img/logo.png" alt="Logo" class="logo">
   </div>
   <form #loginForm="ngForm">
-      <ion-card-content>
-        <ion-card-title text-center color="primary">Login</ion-card-title>
-        <div>
+    <ion-card-content>
+      <div>
         <button ion-button type="button" block class="facebook" (click)="signInWithFb()" icon-left>
           <ion-icon name="logo-facebook"></ion-icon>
           Login With Facebook
         </button>
+        <button ion-button type="button" block class="google" (click)="signInWithGoogle()" icon-left>
+          <ion-icon name="logo-googleplus"></ion-icon>
+          Login With Google
+        </button>
       </div>
       <h2 class="or_h2">OR</h2>
-      <hr>
-        <ion-item>
-          <ion-label floating>Email Address</ion-label>
-          <ion-input type="email" name="email" [(ngModel)]="account.email" #email="ngModel" email>
-          </ion-input>
-        </ion-item>
+      <ion-item>
+        <ion-label floating>Email Address</ion-label>
+        <ion-input type="email" name="email" [(ngModel)]="account.email" #email="ngModel" email>
+        </ion-input>
+      </ion-item>
 
-        <div padding *ngIf="email.invalid && email.dirty">
-          <span class="global_input-error">Email entered is invalid</span>
-        </div>
-
-        <ion-item>
-          <ion-label floating>Password</ion-label>
-          <ion-input type="password" required [(ngModel)]="account.password" name="password" #password="ngModel" pattern="^.{6,}$"></ion-input>
-        </ion-item>
-
-        <div padding *ngIf="password.invalid && password.dirty">
-          <span class="global_input-error">Password must be atleast 6 characters</span>
-        </div>
-        
-      </ion-card-content>
-      <div class="login-form_buttons">
-        <button ion-button (click)="login()" [disabled]="loginForm.invalid">Login</button>
-        <button ion-button color="secondary" (click)="goToRegisterPage('RegisterPage')">Register</button>
+      <div padding *ngIf="email.invalid && email.dirty">
+        <span class="global_input-error">Email entered is invalid</span>
       </div>
-      <div class="forgt">
-        <a (click)="passReset()">Forgot password?</a>
+
+      <ion-item>
+        <ion-label floating>Password</ion-label>
+        <ion-input type="password" required [(ngModel)]="account.password" name="password" #password="ngModel" pattern="^.{6,}$"></ion-input>
+      </ion-item>
+
+      <div padding *ngIf="password.invalid && password.dirty">
+        <span class="global_input-error">Password must be atleast 6 characters</span>
+      </div>
+
+    </ion-card-content>
+    <div class="terms_div">
+      <ion-checkbox [(ngModel)]="privacyCheckbox" (ionChange)="updateCheckbox()" name="privacyCheckbox"></ion-checkbox>
+      <p>I agree with the <a href="http://www.upforcetech.com/whatyousay/privacy_policy.html">privacy policy</a></p>
+    </div>
+    <div class="login-form_buttons">
+      <button ion-button (click)="login()" [disabled]="loginForm.invalid || !isChecked">Login</button>
+      <button ion-button color="secondary" (click)="goToRegisterPage('RegisterPage')">Register</button>
+    </div>
+    <div class="forgt">
+      <a (click)="passReset()">Forgot password?</a>
     </div>
   </form>
 </ion-content>

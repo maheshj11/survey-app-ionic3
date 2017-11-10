@@ -6,6 +6,7 @@ import { AlertController, App, Nav, NavController, Platform } from 'ionic-angula
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import * as moment from 'moment-timezone';
+import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
 declare var FCMPlugin;
 
 @Component({
@@ -28,9 +29,10 @@ export class MyApp {
     private authService: AuthService,
     private deeplinks: Deeplinks,
     private alertCtrl: AlertController,
+    private admobFree: AdMobFree,
     private app: App) {
 
-    this.authService.getAuthenticatedUser().subscribe(auth => {debugger
+    this.authService.getAuthenticatedUser().subscribe(auth => {
       if (auth) {
         if (this.incomingNotification) {
           this.navChild.push('SurveyStatsPage', { userId: this.data.fromId, surveyId: this.data.fromKey });
@@ -73,8 +75,8 @@ export class MyApp {
               buttons: [
                 {
                   text: 'No',
-                  role:'Cancel',
-                  handler: () => {}
+                  role: 'Cancel',
+                  handler: () => { }
                 },
                 {
                   text: 'YES',
@@ -84,9 +86,30 @@ export class MyApp {
                 }
               ]
             });
-           alert.present();
+            alert.present();
           }
         });
+      }
+
+
+      /* Admob-free */
+      if(platform.is('cordova'))
+      {
+        const bannerConfig: AdMobFreeBannerConfig = {
+          // add your config here
+          // for the sake of this example we will just use the test config
+          id: 'ca-app-pub-2929781564932795/8340248664',
+          isTesting: false,
+          autoShow: true
+        };
+        this.admobFree.banner.config(bannerConfig);
+
+        this.admobFree.banner.prepare()
+          .then(() => {
+            // banner Ad is ready
+            // if we set autoShow to false, then we will need to call the show method here
+          })
+          .catch(e => console.log(e));
       }
 
       /* Mobile Hardware Back Button Function */

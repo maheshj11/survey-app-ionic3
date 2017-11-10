@@ -94,7 +94,6 @@ export class SubmitVotePage implements OnInit {
             this.survey = data;
             if(this.survey.disabled === true){
               this.surveyDisabled = true;
-              return;
             }
             if (!this.inRecievedList) {
               const recievedSurvey: RecievedSurvey = {
