@@ -2,11 +2,10 @@ import { Deeplinks } from '@ionic-native/deeplinks';
 import { AuthService } from '../providers/auth/auth.service';
 import { ViewChild } from '@angular/core';
 import { Component } from '@angular/core';
-import { AlertController, App, Nav, NavController, Platform } from 'ionic-angular';
+import { AlertController, App, Nav, NavController, Platform, Loading, LoadingController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import * as moment from 'moment-timezone';
-import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
 declare var FCMPlugin;
 
 @Component({
@@ -22,6 +21,7 @@ export class MyApp {
   showedAlert: boolean;
   incomingNotification: boolean = false;
   data: any;
+  loader: Loading
 
   @ViewChild(Nav) navChild: Nav;
 
@@ -29,7 +29,7 @@ export class MyApp {
     private authService: AuthService,
     private deeplinks: Deeplinks,
     private alertCtrl: AlertController,
-    private admobFree: AdMobFree,
+    private loadingCtrl: LoadingController,
     private app: App) {
 
     this.authService.getAuthenticatedUser().subscribe(auth => {
@@ -58,6 +58,25 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
       moment.tz.setDefault("Asia/Kolkata");
+
+      /* AdMob Ads */
+      // if (platform.is('cordova')) {
+      //   const bannerConfig: AdMobFreeBannerConfig = {
+      //     // add your config here
+      //     // for the sake of this example we will just use the test config
+      //     id:'ca-app-pub-2929781564932795/8340248664',
+      //     isTesting: false,
+      //     autoShow: true
+      //   };
+      //   this.admobFree.banner.config(bannerConfig);
+
+      //   this.admobFree.banner.prepare()
+      //     .then(() => {
+      //       // banner Ad is ready
+      //       // if we set autoShow to false, then we will need to call the show method here
+      //     })
+      //     .catch(e => console.log(e));
+      // }
 
 
       /* Push Notification */
@@ -92,65 +111,53 @@ export class MyApp {
       }
 
 
-      /* Admob-free */
-      if(platform.is('cordova'))
-      {
-        const bannerConfig: AdMobFreeBannerConfig = {
-          // add your config here
-          // for the sake of this example we will just use the test config
-          id: 'ca-app-pub-2929781564932795/8340248664',
-          isTesting: false,
-          autoShow: true
-        };
-        this.admobFree.banner.config(bannerConfig);
 
-        this.admobFree.banner.prepare()
-          .then(() => {
-            // banner Ad is ready
-            // if we set autoShow to false, then we will need to call the show method here
-          })
-          .catch(e => console.log(e));
-      }
 
       /* Mobile Hardware Back Button Function */
 
       platform.registerBackButtonAction(() => {
         let activeNav = this.app.getActiveNavs()
-        activeNav.map(view => {
-          this.navChild.getActive().name;
-          console.log(this.navChild.getActive().name);
-          if (this.navChild.getActive().name === "SubmitVotePage" || this.navChild.getActive().name === "SurveyStatsPage") {
+        activeNav.map((view: any) => {
+          if (view.root === 'ProfilePage' || view.root === 'VotePage') {
             this.navChild.setRoot("TabsPage");
-          } else {
-            if (view.canGoBack()) {
-              view.pop();
+          }
+          else {
+            this.navChild.getActive().name;
+            console.log(this.navChild.getActive().name);
+            if (this.navChild.getActive().name === "SubmitVotePage" || this.navChild.getActive().name === "SurveyStatsPage") {
+              this.navChild.setRoot("TabsPage");
             }
             else {
-              if (!this.showedAlert) {
-                this.showedAlert = true;
-                this.confirmAlert = this.alertCtrl.create({
-                  title: "Exit App",
-                  message: "Do you want to exit the app?",
-                  buttons: [
-                    {
-                      text: 'NO',
-                      handler: () => {
-                        this.showedAlert = false;
-                        return;
+              if (view.canGoBack()) {
+                view.pop();
+              }
+              else {
+                if (!this.showedAlert) {
+                  this.showedAlert = true;
+                  this.confirmAlert = this.alertCtrl.create({
+                    title: "Exit App",
+                    message: "Do you want to exit the app?",
+                    buttons: [
+                      {
+                        text: 'NO',
+                        handler: () => {
+                          this.showedAlert = false;
+                          return;
+                        }
+                      },
+                      {
+                        text: 'YES',
+                        handler: () => {
+                          platform.exitApp();
+                        }
                       }
-                    },
-                    {
-                      text: 'YES',
-                      handler: () => {
-                        platform.exitApp();
-                      }
-                    }
-                  ]
-                });
-                this.confirmAlert.present();
-              } else {
-                this.showedAlert = false;
-                this.confirmAlert.dismiss();
+                    ]
+                  });
+                  this.confirmAlert.present();
+                } else {
+                  this.showedAlert = false;
+                  this.confirmAlert.dismiss();
+                }
               }
             }
           }

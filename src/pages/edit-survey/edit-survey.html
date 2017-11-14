@@ -46,7 +46,7 @@
       <ion-item *ngFor="let item of optionsData ; let i='index'" text-wrap>
         <ion-label *ngIf="item.type === 'text'" floating>Option {{i+1}}</ion-label>
         <ion-input *ngIf="item.type === 'text'" type="text" [value]="item.name" (input)="item.name = $event.target.value"></ion-input>
-        <button *ngIf="item.type === 'text'" ion-button icon-only clear item-right (click)="removeData(i)"><ion-icon color="danger" name="close"></ion-icon></button>
+        <button *ngIf="item.type === 'text'" ion-button icon-only clear item-right (click)="removeData(i,item)"><ion-icon color="danger" name="close"></ion-icon></button>
 
         <div class="options-container-div" *ngIf="item.type === 'image'">
           <button type="button" ion-button  class="option-button" (click)=onTakePicture(i) icon-left>
@@ -59,7 +59,7 @@
             </button>
           <div>
             <img class="optionsImage-image" [src]="_DomSanitizer.bypassSecurityTrustUrl(item.imageUrl)" *ngIf="item.imageUrl" />
-            <ion-icon class="option-icon" color="danger" name="close" (click)="removeData(i)"></ion-icon>
+            <ion-icon class="option-icon" color="danger" name="close" (click)="removeData(i,item)"></ion-icon>
           </div>
         </div>
 
@@ -72,7 +72,7 @@
             <audio class="audio-tag" controls *ngIf="item.audioUrl">
               <source [src]="item.audioUrl" type="audio/wav">
             </audio>
-            <ion-icon class="option-icon" color="danger" name="close" (click)="removeData(i)"></ion-icon>
+            <ion-icon class="option-icon" color="danger" name="close" (click)="removeData(i,item)"></ion-icon>
           </div>
         </div>
 
@@ -88,7 +88,7 @@
             <h2>{{ item.videoTitle }}</h2>
             <button ion-button clear item-end (click)="addYouTubeUrl(i)">Edit</button>
           </ion-item>
-          <ion-icon class="option-icon" color="danger" name="close" (click)="removeData(i)"></ion-icon>
+          <ion-icon class="option-icon" color="danger" name="close" (click)="removeData(i,item)"></ion-icon>
         </div>
 
       </ion-item>

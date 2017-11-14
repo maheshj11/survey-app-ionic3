@@ -105,10 +105,7 @@ export class SubmitVotePage implements OnInit {
                 didVote: false
               }
               this.dataService.saveRecievedSurvey(recievedSurvey, this.authenticatedUser).then(data => {
-  
                 this.surveyKey = data.key;
-                localStorage.removeItem('userId');
-                localStorage.removeItem('surveyId');
               })
             }
             if (this.votedData) {
@@ -151,10 +148,10 @@ export class SubmitVotePage implements OnInit {
         }
         else {
           this.sameUser = true;
-          localStorage.removeItem('userId');
-          localStorage.removeItem('surveyId');
           this.loader.dismiss();
         }
+        localStorage.removeItem('userId');
+        localStorage.removeItem('surveyId');
       }
       else {
         localStorage.setItem('userId', this.userId);

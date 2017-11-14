@@ -25,7 +25,7 @@
       </div>
       <h2 class="or_h2">OR</h2>
       <ion-item>
-        <ion-label floating>Email Address</ion-label>
+        <ion-label stacked>Email Address</ion-label>
         <ion-input type="email" name="email" [(ngModel)]="account.email" #email="ngModel" email>
         </ion-input>
       </ion-item>
@@ -35,7 +35,7 @@
       </div>
 
       <ion-item>
-        <ion-label floating>Password</ion-label>
+        <ion-label stacked>Password</ion-label>
         <ion-input type="password" required [(ngModel)]="account.password" name="password" #password="ngModel" pattern="^.{6,}$"></ion-input>
       </ion-item>
 

@@ -11,7 +11,7 @@ import { MediaCapture } from '@ionic-native/media-capture';
 import { Deeplinks } from '@ionic-native/deeplinks';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { Base64 } from '@ionic-native/base64';
-import { AdMobFree } from '@ionic-native/admob-free';
+//import { AdMobFree } from '@ionic-native/admob-free';
 
 import { MyApp } from './app.component';
 
@@ -56,7 +56,6 @@ import { ChartsModule } from 'ng2-charts';
     Deeplinks,
     Facebook,
     Base64,
-    AdMobFree,
     GooglePlus
   ]
 })

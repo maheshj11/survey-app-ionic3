@@ -43,26 +43,26 @@ export class ProfilePage {
         if (this.authenticatedUser.displayName) {
           this.socialLogin = true;
         }
-      }
-      this.dataService.getProfile(this.authenticatedUser).subscribe((result: Profile) => {
-        this.loader.dismiss();
-        if (result.firstName) {
-          this.updateProfile = true;
-          this.profile = result;
-        }
-        else {
-          if (this.authenticatedUser.displayName) {
-            let name = this.authenticatedUser.displayName
-            let arrName = name.split(" ");
-            let firstName = arrName.slice(0, 1).join(' ');
-            let lastName = arrName.slice(1, arrName.length).join(' ');
-            const profileData = {} as Profile;
-            profileData.firstName = firstName
-            profileData.lastName = lastName
-            this.dataService.saveProfile(this.authenticatedUser, profileData);
+        this.dataService.getProfile(this.authenticatedUser).subscribe((result: Profile) => {
+          this.loader.dismiss();
+          if (result.firstName) {
+            this.updateProfile = true;
+            this.profile = result;
           }
-        }
-      })
+          else {
+            if (this.authenticatedUser.displayName) {
+              let name = this.authenticatedUser.displayName
+              let arrName = name.split(" ");
+              let firstName = arrName.slice(0, 1).join(' ');
+              let lastName = arrName.slice(1, arrName.length).join(' ');
+              const profileData = {} as Profile;
+              profileData.firstName = firstName
+              profileData.lastName = lastName
+              this.dataService.saveProfile(this.authenticatedUser, profileData);
+            }
+          }
+        })
+      }
     })
   }
 

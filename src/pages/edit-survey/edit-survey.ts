@@ -50,7 +50,7 @@ export class EditSurveyPage implements OnInit {
   apiKey = 'AIzaSyDRxaUSTylptCTgX7-4e1Yfw4ynvIYJ7Mk';
   uploadFiles = [];
   loader: Loading;
-  imageUpdated: boolean = false;
+  audioUpdated: boolean = false;
   deleteAudio = [];
 
   constructor(private navCtrl: NavController,
@@ -70,7 +70,7 @@ export class EditSurveyPage implements OnInit {
       this.authenticatedUser = user;
     })
     this.loader = this.loadingCtrl.create({
-      content: 'Editing Survey'
+      content: 'Please wait'
     })
   }
 
@@ -136,7 +136,7 @@ export class EditSurveyPage implements OnInit {
     if (event === "Comments") {
       this.typeSingle = false;
       if (this.commentsData.length === 0) {
-        this.commentsData.push({ name: "", totalVotes: 0, id: "ID" + Math.random(), checked: false})
+        this.commentsData.push({ name: "", totalVotes: 0, id: "ID" + Math.random(), checked: false })
       }
     }
     else {
@@ -188,7 +188,7 @@ export class EditSurveyPage implements OnInit {
   }
   addMoreOption(data) {
     if (data === "image") {
-      this.optionsData.push({ type: 'image', imageUrl: "", totalVotes: 0, id: "ID" + Math.random(), checked: false})
+      this.optionsData.push({ type: 'image', imageUrl: "", totalVotes: 0, id: "ID" + Math.random(), checked: false })
       this.imageChecked = true;
       this.audioChecked = false;
       this.videoChecked = false;
@@ -196,7 +196,7 @@ export class EditSurveyPage implements OnInit {
       this.optionsDataCount++;
     }
     else if (data === "audio") {
-      this.optionsData.push({ type: 'audio', audioUrl: "", totalVotes: 0, id: "ID" + Math.random(), checked: false})
+      this.optionsData.push({ type: 'audio', audioUrl: "", totalVotes: 0, id: "ID" + Math.random(), checked: false })
       this.audioChecked = true;
       this.imageChecked = false;
       this.videoChecked = false;
@@ -204,7 +204,7 @@ export class EditSurveyPage implements OnInit {
       this.optionsDataCount++;
     }
     else if (data === "video") {
-      this.optionsData.push({ type: 'video', videoId: "", totalVotes: 0, id: "ID" + Math.random(), checked: false})
+      this.optionsData.push({ type: 'video', videoId: "", totalVotes: 0, id: "ID" + Math.random(), checked: false })
       this.videoChecked = true;
       this.imageChecked = false;
       this.audioChecked = false;
@@ -213,14 +213,14 @@ export class EditSurveyPage implements OnInit {
     }
     else {
       if (this.typeSingle) {
-        this.optionsData.push({ type: 'text', name: "", totalVotes: 0, id: "ID" + Math.random(), checked: false})
+        this.optionsData.push({ type: 'text', name: "", totalVotes: 0, id: "ID" + Math.random(), checked: false })
         this.optionsDataCount++;
         this.textChecked = true;
         this.imageChecked = false;
         this.audioChecked = false;
         this.videoChecked = false;
       } else {
-        this.commentsData.push({ name: "", totalVotes: 0, id: "ID" + Math.random(), checked: false})
+        this.commentsData.push({ name: "", totalVotes: 0, id: "ID" + Math.random(), checked: false })
         this.commentsDataCount++;
       }
     }
@@ -308,18 +308,20 @@ export class EditSurveyPage implements OnInit {
     }
   }
 
-  removeData(i) {
+  removeData(i, item) {debugger
     if (this.optionsDataCount > 2) {
       let _id = this.optionsData[i].id;
-      if (this.uploadFiles.length !== 0) {
-        this.uploadFiles.map((data, index) => {
-          if (data.id === _id) {
-            this.uploadFiles.splice(index, 1)
-          }
-        })
-      } else {
-        this.imageUpdated = true;
-        this.deleteAudio.push(this.optionsData[i].audioUrl);
+      if (item.type === 'audio') {
+        if (this.uploadFiles.length !== 0) {
+          this.uploadFiles.map((data, index) => {
+            if (data.id === _id) {
+              this.uploadFiles.splice(index, 1)
+            }
+          })
+        } else {
+          this.audioUpdated = true;
+          this.deleteAudio.push(this.optionsData[i].audioUrl);
+        }
       }
       this.optionsData.splice(i, 1);
       this.optionsDataCount--;
@@ -346,7 +348,7 @@ export class EditSurveyPage implements OnInit {
             }
           })
         } else {
-          this.imageUpdated = true;
+          this.audioUpdated = true;
           this.deleteAudio.push(this.optionsData[i].audioUrl);
         }
         this.uploadFiles.push({ file: data[0], index: i, id: _id });
@@ -454,7 +456,7 @@ export class EditSurveyPage implements OnInit {
 
   edit() {
     this.loader.present();
-    if(this.imageUpdated){
+    if (this.audioUpdated) {
       this.deleteAudio.map(data => {
         this.dataService.deleteAudio(data);
       })

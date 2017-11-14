@@ -13,7 +13,7 @@
 
 <ion-content>
   <ion-list>
-    <ion-item text-wrap *ngIf="emptyList">You have not created any Surveys yet, click here to <a (click)="addNewSurvey()">Create One</a></ion-item>
+    <!-- <ion-item text-wrap *ngIf="emptyList">You have not created any Surveys yet, click here to <a (click)="addNewSurvey()">Create One</a></ion-item> -->
     <ion-item-sliding #item *ngFor="let survey of surveyList">
       <ion-item (click)="editSurvey(survey)">
         <ion-icon item-left name="clipboard"></ion-icon>

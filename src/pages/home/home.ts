@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController, IonicPage, ItemSliding, NavController, NavParams } from 'ionic-angular';
 import { LoadingController, Loading } from 'ionic-angular';
 import { SocialSharing } from '@ionic-native/social-sharing';
+// import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
+// import { Platform } from 'ionic-angular/platform/platform';
 declare var FCMPlugin;
 
 @IonicPage({
@@ -22,7 +24,7 @@ export class HomePage {
   showedAlert: boolean;
   confirmAlert: any;
   emptyList: boolean;
-  loaderPresent= false;
+  loaderPresent = false;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -30,21 +32,20 @@ export class HomePage {
     private loadingCtrl: LoadingController,
     private dataService: DataService,
     private socialSharing: SocialSharing,
-    private alertCtrl: AlertController) {
+    private alertCtrl: AlertController,
+    ) {
     this.authService.getAuthenticatedUser().subscribe((user: User) => {
       if (user) {
-        if(!this.loaderPresent){
+        if (!this.loaderPresent) {
           this.loaderstart();
           this.loader.present();
           this.loaderPresent = true;
         }
         this.authenticatedUser = user;
         if (this.authenticatedUser) {
+          //this.showAd();
           this.dataService.getSurveys(this.authenticatedUser).subscribe((data: Survey[]) => {
-            if (data.length === 0) {
-              this.emptyList = true;
-            }
-            this.surveyList = data;
+            this.surveyList = data;debugger
             //this.surveyList = Object.assign([],data);
             console.log(data);
             this.loader.dismiss();
@@ -69,8 +70,29 @@ export class HomePage {
     })
   }
 
-  // ionViewWillEnter(){
-  //   this.loaderstart()
+  /* Admob-free */
+
+  // showAd() {
+  //   if (this.platform.is('cordova')) {
+  //     const bannerConfig: AdMobFreeBannerConfig = {
+  //       // add your config here
+  //       // for the sake of this example we will just use the test config
+  //       id: 'ca-app-pub-2929781564932795/8340248664',
+  //       isTesting: false,
+  //       autoShow: true
+  //     };
+  //     this.admobFree.banner.config(bannerConfig);
+
+  //     this.admobFree.banner.prepare()
+  //       .then(() => {
+  //         // banner Ad is ready
+  //         // if we set autoShow to false, then we will need to call the show method here
+  //       })
+  //       .catch(e => {
+  //         debugger
+  //         console.log(e)
+  //       });
+  //   }
   // }
   loaderstart() {
     this.loader = this.loadingCtrl.create({
