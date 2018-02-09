@@ -12,6 +12,12 @@ log.txt
 .vscode/
 npm-debug.log*
 
+google-services.json
+GoogleService-Info.plist
+ReleaseReady.apk
+zipalign
+
+keys/
 .idea/
 .sourcemaps/
 .sass-cache/
