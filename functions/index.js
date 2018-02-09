@@ -6,8 +6,8 @@ admin.initializeApp(functions.config().firebase);
 exports.createSurvey = functions.auth.user().onCreate(event => {
 
     console.log(event);
-  const user = event.data;
-  var survey = {
+    const user = event.data;
+    var survey = {
       title : "Sample Survey",
       disabled : false,
       surveyVotes : 0,
@@ -16,8 +16,6 @@ exports.createSurvey = functions.auth.user().onCreate(event => {
       {type: 'text', name: "B", totalVotes: 0, id: "ID" + Math.random(), checked: false}]
   };
   console.log(survey);
-//   this.surveyList = this.database.list(`/users/${user.uid}/surveys/`);
-//   this.surveyList.push(survey)
   admin.database().ref(`/users/${user.uid}/surveys/`).push(survey);
 });
 

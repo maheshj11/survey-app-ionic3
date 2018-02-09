@@ -90,7 +90,7 @@ export class DataService {
 
   uploadAudio(data) {
     const storageRef = firebase.storage().ref('audio-files/')
-    var fileName = this.newGuid();
+    var fileName = this.newGuid()
     return storageRef.child(fileName).put(data);
   }
   newGuid() {

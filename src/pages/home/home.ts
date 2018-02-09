@@ -45,7 +45,7 @@ export class HomePage {
         if (this.authenticatedUser) {
           //this.showAd();
           this.dataService.getSurveys(this.authenticatedUser).subscribe((data: Survey[]) => {
-            this.surveyList = data;debugger
+            this.surveyList = data;
             //this.surveyList = Object.assign([],data);
             console.log(data);
             this.loader.dismiss();
